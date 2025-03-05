@@ -3,12 +3,17 @@
 use \Firebase\JWT\JWT;
 // composer require firebase/php-jwt
 
+/** 
+  *	@property form_validation $form_validation
+  * @property api_model $api_model
+  * @property input $input
+  */
+
 class Auth_Controller extends RestApi_Controller
 {
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->library('api_auth');
 		$this->load->model('api_model');
 	}
 

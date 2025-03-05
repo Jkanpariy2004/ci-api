@@ -1,5 +1,12 @@
 <?php
 
+/** 
+  *	@property form_validation $form_validation
+  * @property api_model $api_model
+  * @property input $input
+  * @property Blog_model $Blog_model
+  */
+
 class Crud_controller extends RestApi_Controller
 {
 	function __construct()
