@@ -1,5 +1,7 @@
 <?php
 
+defined('BASEPATH') or exit('No direct script access allowed');
+
 if (!function_exists('upload_image')) {
     function upload_image($upload_path = 'uploads/', $allowed_types = 'gif|jpg|png', $max_size = 2048)
     {

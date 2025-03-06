@@ -1,11 +1,12 @@
 <?php
 
+defined('BASEPATH') or exit('No direct script access allowed');
 /** 
-  *	@property form_validation $form_validation
-  * @property api_model $api_model
-  * @property input $input
-  * @property Blog_model $Blog_model
-  */
+ *	@property form_validation $form_validation
+ * @property api_model $api_model
+ * @property input $input
+ * @property Blog_model $Blog_model
+ */
 
 class Crud_controller extends RestApi_Controller
 {
@@ -13,10 +14,10 @@ class Crud_controller extends RestApi_Controller
 	{
 		parent::__construct();
 		$this->load->model('api_model');
-		$this->load->library('form_validation');
 		$this->load->library('upload');
 		$this->load->model('Blog_model');
 		$this->load->helper('image_upload');
+		$this->validateToken();
 	}
 
 	public function insert_blog()

@@ -1,5 +1,7 @@
 <?php
 
+defined('BASEPATH') or exit('No direct script access allowed');
+
 use \Firebase\JWT\JWT;
 // composer require firebase/php-jwt
 
@@ -76,33 +78,34 @@ class Auth_Controller extends RestApi_Controller
 		} else {
 			$user = $this->api_model->getUserByEmail($email);
 			if ($user && password_verify($password, $user->password)) {
-				$loginStatus = $user;
+				$loginStatus = [
+					'id'       => $user->id,
+					'fullname' => $user->fullname,
+					'email'    => $user->email,
+					'phone_no' => $user->phone_no,
+					'dob'      => date('d-m-Y', strtotime($user->dob)),
+				];
 			} else {
 				$loginStatus = false;
 			}
 			if ($loginStatus != false) {
-				$userId    = $loginStatus->id;
 				$tokenData = [
-					'id' => $user->id,
-					"fullname" => $user->fullname,
 					"email" => $user->email,
-					"phone_no" => $user->phone_no,
-					"dob" => $user->dob,
 					"password" => $user->password,
-					'exp' => time() + 3600,
+					"exp" => time() + 3600,
 				];
 				$secretKey = bin2hex(random_bytes(64));
 
 				$token = JWT::encode($tokenData, $secretKey, 'HS256');
 
-				$this->api_model->storeToken($userId, $token, date('Y-m-d H:i:s', strtotime('+1 hour')));
+				$this->api_model->storeToken($user->id, $token, date('Y-m-d H:i:s', strtotime('+1 hour')));
 
 				$responseData = [
 					'status'       => true,
 					'message'      => 'Login successful',
 					'token'        => $token,
 					'token_expiry' => date('Y-m-d H:i:s', strtotime('+1 hour')),
-					'data'         => $loginStatus,
+					'user'         => $loginStatus,
 				];
 				return $this->response($responseData, 200);
 			} else {
